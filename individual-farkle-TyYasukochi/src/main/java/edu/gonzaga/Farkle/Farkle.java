@@ -250,6 +250,9 @@ static Integer score(ArrayList<Integer> meld){
         int countfour = 0;
         int countfive = 0;
         int countsix = 0;
+        int triple = 0;
+        int pair = 0;
+
 
     //iterate through and count
     for (Integer number : meld) {
@@ -280,16 +283,28 @@ static Integer score(ArrayList<Integer> meld){
             }
         }
     
+        //pairs
+
+        if (countone == 2){pair++;}
+        if (counttwo == 2){pair++;}
+        if (countthree == 2){pair++;}
+        if (countfour == 2){pair++;}
+        if (countfive == 2){pair++;}
+        if (countsix == 2){pair++;}
+
+
+
     //combinations
     if (countone == 1){score=score+100;}
     if (countfive == 1){score=score+50;} 
-    if (countone == 3){score=score+1000;} 
-    if (counttwo == 3){score=score+200;} 
-    if (countthree == 3){score=score+300;} 
-    if (countfour == 3){score=score+400;}  
-    if (countfive == 3){score=score+500;}
-    if (countsix == 3){score=score+600;}
+    if (countone == 3){score=score+1000; triple++;} 
+    if (counttwo == 3){score=score+200; triple++;} 
+    if (countthree == 3){score=score+300; triple++;} 
+    if (countfour == 3){score=score+400; triple++;}  
+    if (countfive == 3){score=score+500; triple++;}
+    if (countsix == 3){score=score+600; triple++;}
     if (countone == 1&&counttwo == 1&&countthree == 1&&countfour == 1&&countfive == 1&&countsix == 1){score=score+1000;}
+    if (pair == 3){score = score + 750;}
     
     return score;
     }
