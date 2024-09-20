@@ -116,6 +116,14 @@ static boolean farkle(ArrayList<Integer> hand){
     int countfour = 0;
     int countfive = 0;
     int countsix = 0;
+    int pair = 0;
+
+    if (countone == 2){pair++;}
+    if (counttwo == 2){pair++;}
+    if (countthree == 2){pair++;}
+    if (countfour == 2){pair++;}
+    if (countfive == 2){pair++;}
+    if (countsix == 2){pair++;}
 
     //iterate through hand and add to corresponding int per value occurence
     for (Integer number : hand) {
@@ -146,7 +154,7 @@ static boolean farkle(ArrayList<Integer> hand){
             }
         }
     //if there are possible combinations there is no farkle
-    if (countone > 0 || countfive > 0 || counttwo >= 3 || countthree >= 3 || countfour >= 3 || countsix >= 3 || countone >= 3 || countfive >= 3){
+    if (countone > 0 || countfive > 0 || counttwo >= 3 || countthree >= 3 || countfour >= 3 || countsix >= 3 || countone >= 3 || countfive >= 3 || pair != 3){
             return false;
         }
         return true;
@@ -296,6 +304,7 @@ static Integer score(ArrayList<Integer> meld){
 
     //combinations
     if (countone == 1){score=score+100;}
+    if(countone == 2){score = score + 200;}
     if (countfive == 1){score=score+50;} 
     if (countone == 3){score=score+1000; triple++;} 
     if (counttwo == 3){score=score+200; triple++;} 
@@ -303,9 +312,10 @@ static Integer score(ArrayList<Integer> meld){
     if (countfour == 3){score=score+400; triple++;}  
     if (countfive == 3){score=score+500; triple++;}
     if (countsix == 3){score=score+600; triple++;}
+    if (countsix == 5){score = score + 1800;}
     if (countone == 1&&counttwo == 1&&countthree == 1&&countfour == 1&&countfive == 1&&countsix == 1){score=score+1000;}
-    if (pair == 3){score = score + 750;}
-    
+    if (pair == 3){score = score + 750;}    
+
     return score;
     }
 }
