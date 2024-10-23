@@ -149,7 +149,7 @@ static boolean farkle(ArrayList<Integer> hand){
                 break;
 
             case 6: 
-                countsix++; 
+                countsix++;
                 break;
             }
         }
@@ -172,27 +172,35 @@ static ArrayList<Integer> meld(ArrayList<Integer> hand, ArrayList<Integer> meld)
         //when a, b, etc.
         switch (choice) {
             case "a":
+            case "A":
                 toggleDie(hand, meld, 0);
                 break;
             case "b":
+            case "B":
                 toggleDie(hand, meld, 1);
                 break;
             case "c":
+            case "C":
                 toggleDie(hand, meld, 2);
                 break;
             case "d":
+            case "D":
                 toggleDie(hand, meld, 3);
                 break;
             case "e":
+            case "E":
                 toggleDie(hand, meld, 4);
                 break;
             case "f":
+            case "F":
                 toggleDie(hand, meld, 5);
                 break;
-            case"k":
+            case "k":
+            case "K":
                 System.out.println("\nRound Over! " + "Score banked: " + score(meld));
                 System.exit(0);
             case "q":
+            case "Q":
                 System.out.println("\nRound Over!");
                 System.exit(0);
             default:
@@ -314,7 +322,7 @@ static Integer score(ArrayList<Integer> meld){
     if (countfive == 3){score=score+500; triple++;}
     if (countsix == 3){score=score+600; triple++;}
     if (countsix == 5){score = score + 1800;}
-    if (countone == 1&&counttwo == 1&&countthree == 1&&countfour == 1&&countfive == 1&&countsix == 1){score=1000;}
+    if (countone == 1&&counttwo == 1&&countthree == 1&&countfour == 1&&countfive == 1&&countsix == 1){score=1000;} 
     if (pair == 3){score = score + 750;}    
 
     return score;
