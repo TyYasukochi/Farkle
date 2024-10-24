@@ -13,6 +13,9 @@
 package edu.gonzaga.Farkle;
 
 import java.util.Scanner;
+
+import javax.lang.model.type.NullType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -183,45 +186,53 @@ static ArrayList<Integer> meld(ArrayList<Integer> hand, ArrayList<Integer> meld)
         //read user input
         String choice = scanner.nextLine();
     
-        //when a, b, etc.
-        switch (choice) {
-            case "a":
-            case "A":
-                toggleDie(hand, meld, 0);
-                break;
-            case "b":
-            case "B":
-                toggleDie(hand, meld, 1);
-                break;
-            case "c":
-            case "C":
-                toggleDie(hand, meld, 2);
-                break;
-            case "d":
-            case "D":
-                toggleDie(hand, meld, 3);
-                break;
-            case "e":
-            case "E":
-                toggleDie(hand, meld, 4);
-                break;
-            case "f":
-            case "F":
-                toggleDie(hand, meld, 5);
-                break;
-            case "k":
-            case "K":
-                System.out.println("\nRound Over! " + "Score banked: " + score(meld));
-                System.exit(0);
-            case "q":
-            case "Q":
+        if(choice.equals("k")||choice.equals("K")){
+            System.out.println("\nRound Over! " + "Score banked: " + score(meld));
+            System.out.println("Would you like to reroll your remaining die? |y/n|");
+            String rrchoice = scanner.nextLine();
+            if(rrchoice.equals("y")||rrchoice.equals("Y")){
+                reroll(hand, hand);
+            }
+            if(rrchoice.equals("n")||rrchoice.equals("N")){
                 System.out.println("\nGame Over! You Ended With " + score(meld) + " points!" );
                 System.exit(0);
-            default:
-                System.out.println("INVALID CHOICE");
-                break;
-        }
-    
+            }
+            }else{
+                switch (choice) {
+                    case "a":
+                    case "A":
+                        toggleDie(hand, meld, 0);
+                        break;
+                    case "b":
+                    case "B":
+                        toggleDie(hand, meld, 1);
+                        break;
+                    case "c":
+                    case "C":
+                        toggleDie(hand, meld, 2);
+                        break;
+                    case "d":
+                    case "D":
+                        toggleDie(hand, meld, 3);
+                        break;
+                    case "e":
+                    case "E":
+                        toggleDie(hand, meld, 4);
+                        break;
+                    case "f":
+                    case "F":
+                        toggleDie(hand, meld, 5);
+                        break;
+        
+                    case "q":
+                    case "Q":
+                        System.out.println("\nGame Over! You Ended With " + score(meld) + " points!" );
+                        System.exit(0);
+                    default:
+                        System.out.println("INVALID CHOICE");
+                        break;
+                }
+            }
         return meld;
     }
 
@@ -342,6 +353,18 @@ static Integer score(ArrayList<Integer> meld){
 
     return score;
     }
+
+    static ArrayList<Integer> reroll(ArrayList<Integer> hand, ArrayList<Integer> currenthand){
+        for(int i=0; i< currenthand.size(); i++){
+            if(currenthand.get(i) != -1){
+                Die die = new Die(6);
+                die.roll();
+                currenthand.set(i, die.getSideUp());
+            }
+        }
+        return hand;
+    }
 }
+
 
 
