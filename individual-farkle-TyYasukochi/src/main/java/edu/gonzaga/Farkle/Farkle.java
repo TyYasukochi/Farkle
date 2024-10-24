@@ -28,8 +28,8 @@ import java.util.Collections;
 /** Main program class for launching Farkle program. */
 public class Farkle {
     // This main is where your Farkle game starts execution for general use.
+    private static int savedscore = 0;
     public static void main(String[] args) {
-
         ArrayList<Integer> currenthand = hand();
         
         ArrayList<Integer> meld = new ArrayList<>();
@@ -66,7 +66,7 @@ public class Farkle {
         System.err.println("(f)      "+ currenthand.get(5)+"      |     ");
         System.err.println("----------------+--------");
         System.err.println("      Meld Score: ");
-        System.out.println("\n(k) Back meld & End round\n" +"(q) Quit Game");
+        System.out.println("\n(k) Back meld\n" +"(q) Quit Game");
 
         //end game when generated hand = farkle
         if (farkle(currenthand) == true) {
@@ -79,9 +79,9 @@ public class Farkle {
 
         while (running) {
             //meld values get saved when edited
-            meld = meld(currenthand, meld);
+            meld = meld(currenthand, meld, Username);
             print(currenthand,meld,Username);
-            System.out.println("\n(k) Bank meld & End round\n" +"(q) Quit Game");
+            System.out.println("\n(k) Bank meld\n" +"(q) Quit Game");
         }
     }
 
@@ -135,13 +135,6 @@ static boolean farkle(ArrayList<Integer> hand){
     int countsix = 0;
     int pair = 0;
 
-    if (countone == 2){pair++;}
-    if (counttwo == 2){pair++;}
-    if (countthree == 2){pair++;}
-    if (countfour == 2){pair++;}
-    if (countfive == 2){pair++;}
-    if (countsix == 2){pair++;}
-
     //iterate through hand and add to corresponding int per value occurence
     for (Integer number : hand) {
         switch (number) {
@@ -170,16 +163,27 @@ static boolean farkle(ArrayList<Integer> hand){
                 break;
             }
         }
+
+        if (countone == 2){pair++;}
+        if (counttwo == 2){pair++;}
+        if (countthree == 2){pair++;}
+        if (countfour == 2){pair++;}
+        if (countfive == 2){pair++;}
+        if (countsix == 2){pair++;}
+
     //if there are possible combinations there is no farkle
     if (countone > 0 || countfive > 0 || counttwo >= 3 || countthree >= 3 || countfour >= 3 || countsix >= 3 || countone >= 3 || countfive >= 3 || pair == 3){
             return false;
         }
+    if (hand.get(0) == -1&&hand.get(1) == -1&&hand.get(2) == -1&&hand.get(3) == -1&&hand.get(4) == -1&&hand.get(5) == -1){
+        return false;
+    }
         return true;
     }
 
 /*----------------------------------------------------------------------------------------- */
 //function for adding die value to meld
-static ArrayList<Integer> meld(ArrayList<Integer> hand, ArrayList<Integer> meld) {
+static ArrayList<Integer> meld(ArrayList<Integer> hand, ArrayList<Integer> meld, String Username) {
         Scanner scanner = new Scanner(System.in);   
     
         System.out.print("\nEnter a letter for your choice :");
@@ -187,17 +191,41 @@ static ArrayList<Integer> meld(ArrayList<Integer> hand, ArrayList<Integer> meld)
         String choice = scanner.nextLine();
     
         if(choice.equals("k")||choice.equals("K")){
-            System.out.println("\nRound Over! " + "Score banked: " + score(meld));
-            System.out.println("Would you like to reroll your remaining die? |y/n|");
-            String rrchoice = scanner.nextLine();
-            if(rrchoice.equals("y")||rrchoice.equals("Y")){
-                reroll(hand, hand);
-            }
-            if(rrchoice.equals("n")||rrchoice.equals("N")){
-                System.out.println("\nGame Over! You Ended With " + score(meld) + " points!" );
+        System.out.println("Would you like to reroll your remaining die? |y/n|");
+        String rrchoice = scanner.nextLine();
+            if (rrchoice.equals("y") || rrchoice.equals("Y")) {
+            reroll(hand, meld, Username);
+            savedscore = score(meld);
+                for (int i = 0; i < meld.size(); i++) {
+                meld.set(i, -1); // Clear meld
+                }
+        }
+        if(rrchoice.equals("n")||rrchoice.equals("N")){
+                System.out.println("\nRound Over! " + "Score banked: " + score(meld));
                 System.exit(0);
+        }
+        if (hothand(meld)) {
+            System.out.println("*******************************");
+            System.out.println("*          HOT HAND!          *");
+            System.out.println("*******************************");
+            System.out.println("Would you like to roll 6 new dice, or bank and end your turn? |y/n|");
+            String hhrrchoice = scanner.nextLine();
+        
+            if (hhrrchoice.equals("y") || rrchoice.equals("Y")) {
+                savedscore = score(meld);
+                reroll(hand, meld, Username);
+    
+                // Clear the meld but keep the score
+                for (int i = 0; i < meld.size(); i++) {
+                    meld.set(i, -1); // Clear meld
+                }
+            if (hhrrchoice.equals("n")||rrchoice.equals("N")){
+                    System.out.println("\nRound Over! " + "Score banked: " + score(meld));
+                    System.exit(0);
             }
-            }else{
+            }
+            }
+        } else {
                 switch (choice) {
                     case "a":
                     case "A":
@@ -351,18 +379,42 @@ static Integer score(ArrayList<Integer> meld){
     if (countone == 1&&counttwo == 1&&countthree == 1&&countfour == 1&&countfive == 1&&countsix == 1){score=1000;} 
     if (pair == 3){score = score + 750;}    
 
-    return score;
+    return (score+savedscore);
     }
 
-    static ArrayList<Integer> reroll(ArrayList<Integer> hand, ArrayList<Integer> currenthand){
+    static ArrayList<Integer> reroll(ArrayList<Integer> currenthand, ArrayList<Integer> meld, String Username){
         for(int i=0; i< currenthand.size(); i++){
-            if(currenthand.get(i) != -1){
+            if (currenthand.get(0) == -1&&currenthand.get(1) == -1&&currenthand.get(2) == -1&&currenthand.get(3) == -1&&
+            currenthand.get(4) == -1&&currenthand.get(5) == -1){
+                for (int j = 0; j < currenthand.size(); j++) {
+                    Die die = new Die(6);
+                    die.roll();
+                    currenthand.set(j, die.getSideUp()); 
+                }
+                break;
+            } else if (currenthand.get(i) != -1){
                 Die die = new Die(6);
                 die.roll();
                 currenthand.set(i, die.getSideUp());
             }
         }
-        return hand;
+        if (farkle(currenthand) == true) {
+            print(currenthand, meld, Username);
+            System.out.println("\nFARKLE!\n" + "Game Over!");
+            System.exit(0);
+        }
+        return currenthand;
+    }
+
+    static boolean hothand(ArrayList<Integer> meld) {
+
+        for (int die : meld) {
+            if (die == -1) {
+                return false; 
+            }
+        }
+      
+        return score(meld) > 0;
     }
 }
 
