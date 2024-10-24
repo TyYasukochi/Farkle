@@ -27,8 +27,6 @@ public class Farkle {
     // This main is where your Farkle game starts execution for general use.
     public static void main(String[] args) {
 
-        System.out.println("\nNow rolling our die!");
-
         ArrayList<Integer> currenthand = hand();
         
         ArrayList<Integer> meld = new ArrayList<>();
@@ -36,7 +34,23 @@ public class Farkle {
             meld.add(-1);
         }
 
-        //default menu
+
+
+        //default menu  
+        System.out.println("\n*****************************************************************************\n" + 
+                           "\n*                      Zag Farkle By Tyler Yasukochi                        *\n" +                                              
+                           "\n*                             Copyright 2024                                *\n" +
+                           "\n*****************************************************************************\n" );
+        Scanner scanner = new Scanner(System.in);  
+        System.out.println("Enter your name: ");
+        String Username = scanner.nextLine();
+
+        if(Username.equals("")){
+            Username = "UnknownPlayer";
+        }
+
+        System.out.println("Username: "+ Username);
+        System.out.println(Username + " It is your turn! Rolling dice...");                           
         System.out.println("Hand: "+ currenthand); 
         System.err.println("\n**************************| CURRENT HAND AND MELD |**************************");
         System.err.println("Die     hand    |  meld");
@@ -63,7 +77,7 @@ public class Farkle {
         while (running) {
             //meld values get saved when edited
             meld = meld(currenthand, meld);
-            print(currenthand,meld);
+            print(currenthand,meld,Username);
             System.out.println("\n(k) Bank meld & End round\n" +"(q) Quit Game");
         }
     }
@@ -201,7 +215,7 @@ static ArrayList<Integer> meld(ArrayList<Integer> hand, ArrayList<Integer> meld)
                 System.exit(0);
             case "q":
             case "Q":
-                System.out.println("\nRound Over!");
+                System.out.println("\nGame Over! You Ended With " + score(meld) + " points!" );
                 System.exit(0);
             default:
                 System.out.println("INVALID CHOICE");
@@ -233,8 +247,9 @@ static void toggleDie(ArrayList<Integer> hand, ArrayList<Integer> meld, int inde
 
 /*----------------------------------------------------------------------------------------- */
 
-static void print(ArrayList<Integer> currenthand, ArrayList<Integer> meld) {
+static void print(ArrayList<Integer> currenthand, ArrayList<Integer> meld, String Username) {
         
+    System.out.println("\nUsername: "+ Username);
     System.err.println("\n*****************************| CURRENT HAND AND MELD |*****************************");
     System.err.println("Die     hand    |  meld");
     System.err.println("----------------+--------");
