@@ -194,8 +194,8 @@ static ArrayList<Integer> meld(ArrayList<Integer> hand, ArrayList<Integer> meld,
         System.out.println("Would you like to reroll your remaining die? |y/n|");
         String rrchoice = scanner.nextLine();
             if (rrchoice.equals("y") || rrchoice.equals("Y")) {
-            reroll(hand, meld, Username);
             savedscore = score(meld);
+            reroll(hand, meld, Username);
                 for (int i = 0; i < meld.size(); i++) {
                 meld.set(i, -1); // Clear meld
                 }
